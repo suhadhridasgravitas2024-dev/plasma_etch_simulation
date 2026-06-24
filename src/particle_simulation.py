@@ -65,7 +65,7 @@ def simulate(pos, A, Nh, fig, ax, dt, vel, acc, tEnd, Nx, boxsize, n0, Gmtx, Lmt
 
     #it is how the code creates two oppositely moving electron beams that interact and produce the two-stream instability.
     scatter1 = ax.scatter(pos[0:Nh], vel[0:Nh], s=0.4, color="blue", alpha=0.5)
-    scatter2 = ax.scatter(pos[Nh:], vel[Nh:], s=0.4, color="green", alpha=0.5)
+    scatter2 = ax.scatter(pos[Nh:], vel[Nh:], s=0.4, color="red", alpha=0.5)
     
     # Update scatter plot data (faster than clearing and redrawing)
     
