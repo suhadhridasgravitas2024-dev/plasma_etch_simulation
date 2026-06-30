@@ -459,7 +459,7 @@ wb.save(out_path)
 print(f"Excel saved -> {out_path}")
 #understnad eepf code 
 #make changes in parameters...50 mTorr TICK
-#sheath simulation 1D 
+#sheath simulation 1D TICK
 #what is being cooled in sheath simulation??
-#what is 1D and 2D?
+#what is 1D and 2D sheath??
 #connection between sheath and eepf?
