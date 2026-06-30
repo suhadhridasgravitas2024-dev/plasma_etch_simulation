@@ -457,9 +457,9 @@ for label, (bins, eepf, color, sf6_frac, n_samp) in results.items():
 out_path = f"/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/eepf_plot_50.xlsx"
 wb.save(out_path)
 print(f"Excel saved -> {out_path}")
-#understnad eepf code,
-#make changes in parameters...50 mTorr
-#sheath simulation 1D
+#understnad eepf code 
+#make changes in parameters...50 mTorr TICK
+#sheath simulation 1D 
 #what is being cooled in sheath simulation??
 #what is 1D and 2D?
 #connection between sheath and eepf?
