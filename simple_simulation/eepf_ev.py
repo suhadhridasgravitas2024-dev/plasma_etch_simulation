@@ -356,8 +356,8 @@ ax.set_title(f"PIC-MCC EEPF — {PRESSURE_MTORR:.0f} mTorr\n"
 ax.legend(fontsize=8)
 ax.grid(True, which="both", ls="--", alpha=0.3)
 plt.tight_layout()
-plt.savefig(f"/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/eepf_plot_50.png", dpi=130, bbox_inches="tight")
-print("Plot saved.")
+
+
 
 # ════════════════════════════════════════════════════════════════════
 # 7. Excel export
@@ -453,10 +453,13 @@ for label, (bins, eepf, color, sf6_frac, n_samp) in results.items():
         cB = ws_cmp.cell(r, c0+1, float(f'{eepf[i]:.6e}'))
         style_data(cA, i); style_data(cB, i)
         cA.number_format = '0.0000'; cB.number_format = '0.000000E+00'
+if __name__=="__main__":
+    plt.savefig(f"/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/eepf_plot_50.png", dpi=130, bbox_inches="tight")
+    print("Plot saved.")
+    out_path = f"/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/eepf_plot_50.xlsx"
+    wb.save(out_path)
+    print(f"Excel saved -> {out_path}")
 
-out_path = f"/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/eepf_plot_50.xlsx"
-wb.save(out_path)
-print(f"Excel saved -> {out_path}")
 #understnad eepf code 
 #make changes in parameters...50 mTorr TICK
 #sheath simulation 1D TICK
