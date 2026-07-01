@@ -38,3 +38,14 @@ Update so far
 - No simulator or model is good without proof of it's validity. Find the real use case and data of the functions you have written and test them against the real world data, or an existing paper and check if your function returns the same observables.
 - Define a clear set of observables that can be plotted in a graph and verified (for example velocity and temperature distribution) for general particle simulation as well as sheath formation ( which is our ultimate goal)
 - Start with a simple 1-d sheath simulation, find relevent sources with verifiable data and then simulate you sheath model to check if it fits real world data
+
+### Task 3 :
+- Study the sheath formation with respect to distance from the wall and get a plot of electron and positive ion density, electric potenital and approximate value of sheath length. Also compare the paramters with existing litterature
+- Write a function that simulates plasma and take following inputs
+    - pressure, plasma gases ( or molecular mass of gas), electron temperature, Ion temepearture
+    - outputs the potential and density of the gas with respect to space (1D and 2-D), time and sheat length
+- Develop a 1-D (and later 2-D) dynamic model of plasma sheath where gas is supplied continuously with a given flow rate (the function paramters will be flow rate of gas, gas properties and temperature (this is not same as electron temperature)) 
+
+## Task 4 : 
+- (In case all previous tasks are done) Develop a model where plasma gasaccelerates via sheath potential and calculate corresponding flux 
+- In addition to sheath potential, simulate gas flow with external potential applied 
