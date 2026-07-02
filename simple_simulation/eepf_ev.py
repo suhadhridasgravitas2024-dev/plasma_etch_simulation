@@ -326,7 +326,7 @@ def get_eepf(energies, bins=60, max_energy=22):
 PRESSURE_MTORR = 50.0   # <-- change this single value for different pressures
 
 ratios = [
-    ('10:0', 0.00, "green"),
+    ('1',  1, "green"),
     ('6:4',  0.40, "red"),
     ('1:9',  0.90, "blue"),
 ]
