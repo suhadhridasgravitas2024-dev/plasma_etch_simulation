@@ -50,3 +50,9 @@ ION_LOSS_EV_SF6 = 15.3     # SF6 ionization loss
 VIB_LOSS_CROSSOVER = 2.0   # eV threshold splitting "low" vs "high" vib loss regime
 VIB_LOSS_EV_LOW     = 0.1  # vibrational loss below crossover
 VIB_LOSS_EV_HIGH    = 0.5  # vibrational loss above crossover (lumped electronic exc.)
+
+
+M_E = 9.11e-31       # Electron mass (kg)
+Q_E = 1.602e-19      # Elementary charge (C)
+EPSILON_0 = 8.854e-12 # Vacuum permittivity (F/m)
+K_B = 1.38e-23       # Boltzmann constant (J/K)
