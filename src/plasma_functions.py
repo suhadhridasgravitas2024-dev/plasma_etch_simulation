@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
+import csv
 
-from constants import *
+from src.constants import *
 
 
 class plasma_and_sheath_simulation:
@@ -361,3 +362,100 @@ class mean_ev_vs_Z_simulation:
     def get_mean_energy_profile(self, z_values, slice_width=0.1):
         """Generates the mean energy array across a sweep of Z locations."""
         return np.array([self.local_mean_energy(z, slice_width) for z in z_values])
+    
+
+
+class ElectricPotentialProfile:
+    """
+    Handles the calculation, saving, and plotting of 1D electric 
+    potential profiles across a plasma sheath.
+    """
+    def __init__(self, gap_length_cm, te_values, debye_lengths_cm):
+        self.gap_length_cm = gap_length_cm
+        self.te_values = te_values
+        self.debye_lengths_cm = debye_lengths_cm
+
+    def calculate_profile(self, z, margin, v_plasma):
+        """
+        Calculates the Electric Potential Phi(z) across the 1D box (Volts).
+        Assumes grounded walls (0 V) and a positive floating bulk plasma.
+        """
+        z = np.asarray(z, dtype=float)
+        
+        # Initialize the whole domain at the bulk plasma potential (the "hill")
+        Phi = np.full_like(z, v_plasma)
+        
+        # Left Wall Sheath (Potential drops from v_plasma down to 0 at the wall)
+        left_mask = z < margin
+        depth_left = z[left_mask]
+        frac_left = np.clip(1.0 - depth_left / margin, 0, 1)
+        Phi[left_mask] = v_plasma * (1.0 - frac_left**(4.0 / 3.0))
+        
+        # Right Wall Sheath (Potential drops from v_plasma down to 0 at the wall)
+        right_mask = z > (self.gap_length_cm - margin)
+        dist_from_right_wall = self.gap_length_cm - z[right_mask]
+        frac_right = np.clip(1.0 - dist_from_right_wall / margin, 0, 1)
+        Phi[right_mask] = v_plasma * (1.0 - frac_right**(4.0 / 3.0))
+        
+        return Phi
+
+    def save_csv(self, path, x, y, x_label, y_label):
+        """Saves spatial data to a CSV file."""
+        with open(path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([x_label, y_label])
+            for xi, yi in zip(x, y):
+                writer.writerow([xi, yi])
+
+    def run_and_plot(self):
+        """
+        Generates the mesh based on the Debye length constraint, 
+        calculates the profiles, exports CSVs, and plots the results.
+        """
+        print("--- Using Provided Debye Lengths ---")
+        for Te, ld_cm in zip(self.te_values, self.debye_lengths_cm):
+            print(f"Te = {Te:4.1f} eV -> lambda_De = {ld_cm:.3f} cm")
+
+        # Ensure mesh spacing (dx) is STRICTLY less than the smallest Debye Length
+        min_debye_cm = min(self.debye_lengths_cm)
+        dx_cm = min_debye_cm / 2.0  
+        Nx = int(self.gap_length_cm / dx_cm)
+        z_full = np.linspace(0, self.gap_length_cm, Nx)
+
+        plt.figure(figsize=(9, 6), dpi=120)
+
+        for Te, ld_cm in zip(self.te_values, self.debye_lengths_cm):
+            # Sheath margin scales with Debye length (~10x)
+            margin = 10 * ld_cm
+            
+            # Plasma floating potential scales with Temperature (~4x Te)
+            v_plasma = 4.0 * Te  
+            
+            Phi_full = self.calculate_profile(z_full, margin, v_plasma)
+            
+            # Plotting
+            plt.plot(z_full, Phi_full, linewidth=2.0, 
+                     label=f'$T_e$ = {Te} eV (Plasma Potential: +{v_plasma} V)')
+            
+            # Save CSVs
+            self.save_csv(f'/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/data_/electric_potential_Te_{Te}eV.csv', z_full, Phi_full, 'Z (cm)', f'Phi (Volts) [Te={Te}eV]')
+            print("saved")
+        # Graph Aesthetics
+        plt.xlim(0, self.gap_length_cm)
+        plt.ylim(bottom=0) # Lock the bottom of the graph to 0 Volts (the walls)
+
+        # Emphasize the symmetric center at z = L / 2
+        plt.axvline(self.gap_length_cm / 2.0, color='gray', linestyle=':', alpha=0.6, label=f'Center (z = {self.gap_length_cm / 2.0} cm)')
+
+        plt.xlabel("Spatial Axis Z (cm)", fontsize=12, fontweight='bold')
+        plt.ylabel("Electric Potential (Volts)", fontsize=12, fontweight='bold')
+        plt.title("Electric Potential vs. Distance in a Symmetric 1D Plasma\n(Grounded walls, floating bulk)", fontsize=13)
+
+        ax = plt.gca()
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        plt.legend(frameon=False, fontsize=11, loc='lower center')
+        plt.grid(True, linestyle='--', alpha=0.3)
+        plt.tight_layout()
+        plt.savefig('/mnt/c/Users/semi/Plasma_simulation/plasma_etch_simulation/simple_simulation/data_/electric_potential_profiles.png')
+        plt.show()
