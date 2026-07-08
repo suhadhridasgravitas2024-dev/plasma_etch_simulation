@@ -49,3 +49,28 @@ Update so far
 ## Task 4 : 
 - (In case all previous tasks are done) Develop a model where plasma gasaccelerates via sheath potential and calculate corresponding flux 
 - In addition to sheath potential, simulate gas flow with external potential applied 
+
+## Suhadhri's take on the tasks
+
+- Progress Status
+    I have completed the work up to the Sheath 1D simulation, which constitutes Part 1 of Task 3.
+- Usage
+    All reusable code lives inside the src folder, split into two files:
+
+    constants.py — holds all the fixed parameters and configuration values used across the project.
+    functions.py — imports these constants and defines the actual logic.
+
+    Functions in functions.py are organized inside classes so that related functionality is grouped together and can be instantiated with its own state where needed.
+
+    - To use this in the main notebook or script:
+
+    Import the required class from functions.py:
+
+    python   from src.functions import RequiredClass
+
+    Define your input variables.
+    Pass them into the class's methods to run the desired computation.
+
+    please insert any constants and functions required for further progress in the same manner in constants.py and functions.py respectively and then follow the same process of importing them from src.Also, there is a folder called "data_" in simple_simulation folder, kindly try to save all the data generated (png/svg/csv/excel/etc.) in this folder just keep things neat and segregated. 
+Thank you...byeee
+
